@@ -1,0 +1,555 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="light dark">
+<title>MedType – Hilfe</title>
+<meta name="description" content="Hilfe zu MedType: das iPhone als Tastatur für den Praxis-PC. Voraussetzungen, erste Schritte, Koppeln, Dongle-Update und häufige Fragen.">
+<style>
+  :root {
+    --bg: #faf7f5;
+    --surface: #ffffff;
+    --surface-2: #f3eeeb;
+    --text: #1c1918;
+    --muted: #5b5450;
+    --line: #e6deda;
+    --accent: #b00d28;
+    --accent-soft: #fbe9e9;
+    --band-1: #d7261e;
+    --band-2: #a30b24;
+    --on-band: #ffffff;
+    --ok: #1d7a3a;
+    --shadow: 0 1px 2px rgba(60, 20, 20, .06), 0 8px 24px rgba(60, 20, 20, .06);
+    --radius: 14px;
+    --measure: 44rem;
+    --font: -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, Roboto, "Helvetica Neue", Arial, sans-serif;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg: #121011;
+      --surface: #1c191a;
+      --surface-2: #242021;
+      --text: #f3efed;
+      --muted: #b5aca8;
+      --line: #322c2d;
+      --accent: #ff7a70;
+      --accent-soft: #2c1718;
+      --band-1: #9e1a1f;
+      --band-2: #5c0a17;
+      --ok: #5fd38a;
+      --shadow: 0 1px 2px rgba(0, 0, 0, .4), 0 8px 24px rgba(0, 0, 0, .3);
+    }
+  }
+  * { box-sizing: border-box; }
+  html { -webkit-text-size-adjust: 100%; }
+  body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--text);
+    font: 17px/1.6 var(--font);
+  }
+  a { color: var(--accent); text-underline-offset: .15em; }
+  a:hover { text-decoration-thickness: 2px; }
+  a:focus-visible, summary:focus-visible {
+    outline: 3px solid var(--accent);
+    outline-offset: 3px;
+    border-radius: 6px;
+  }
+  .skip {
+    position: absolute; left: -999px; top: 0;
+    background: var(--surface); color: var(--text); padding: .5rem .75rem; z-index: 10;
+  }
+  .skip:focus { left: 1rem; top: 1rem; }
+
+  /* Kopfbereich */
+  .band {
+    background: linear-gradient(135deg, var(--band-1), var(--band-2));
+    color: var(--on-band);
+  }
+  .band-inner {
+    max-width: var(--measure);
+    margin: 0 auto;
+    padding: 1.25rem 16px 2.75rem;
+  }
+  .topnav {
+    display: flex; align-items: center; justify-content: space-between; gap: 1rem;
+    font-size: .95rem;
+  }
+  .brand { display: flex; align-items: center; gap: .6rem; font-weight: 700; color: var(--on-band); text-decoration: none; }
+  .brand svg { width: 36px; height: 36px; flex: none; filter: drop-shadow(0 2px 6px rgba(0,0,0,.25)); }
+  .topnav nav a { color: var(--on-band); opacity: .92; margin-left: 1rem; }
+  .topnav nav a[aria-current="page"] { opacity: 1; font-weight: 600; text-decoration: none; }
+  .hero h1 {
+    font-size: clamp(2rem, 1.4rem + 3vw, 3rem);
+    line-height: 1.1;
+    letter-spacing: -.02em;
+    margin: 2rem 0 .6rem;
+  }
+  .hero p { margin: 0; font-size: 1.12rem; max-width: 34rem; opacity: .96; }
+
+  main {
+    max-width: var(--measure);
+    margin: -1.5rem auto 0;
+    padding: 0 16px 3rem;
+  }
+  .card {
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    padding: 1.4rem 1.4rem 1.2rem;
+    margin-bottom: 1.25rem;
+  }
+  h2 {
+    font-size: 1.35rem;
+    line-height: 1.25;
+    letter-spacing: -.01em;
+    margin: 0 0 .8rem;
+  }
+  h3 { font-size: 1.05rem; margin: 1.2rem 0 .4rem; }
+  p { margin: 0 0 .9rem; }
+  ul { margin: 0 0 .9rem; padding-left: 1.25rem; }
+  li { margin-bottom: .35rem; }
+  .lead { font-size: 1.05rem; }
+  .note {
+    background: var(--accent-soft);
+    border-left: 4px solid var(--accent);
+    border-radius: 8px;
+    padding: .8rem 1rem;
+    margin: 0 0 .9rem;
+  }
+  .muted { color: var(--muted); }
+  .path { font-weight: 600; }
+
+  /* Schritte */
+  ol.steps { list-style: none; counter-reset: step; padding: 0; margin: 0; }
+  ol.steps li {
+    counter-increment: step;
+    position: relative;
+    padding: 0 0 1rem 3rem;
+    margin: 0;
+  }
+  ol.steps li::before {
+    content: counter(step);
+    position: absolute; left: 0; top: -.05rem;
+    width: 2.1rem; height: 2.1rem; border-radius: 50%;
+    display: grid; place-items: center;
+    background: var(--accent); color: var(--surface);
+    font-weight: 700; font-size: .95rem;
+  }
+  ol.steps li:not(:last-child)::after {
+    content: ""; position: absolute; left: 1.03rem; top: 2.3rem; bottom: .25rem;
+    width: 2px; background: var(--line);
+  }
+
+  /* Tabellen */
+  .table-wrap { overflow-x: auto; margin: 0 0 .9rem; }
+  table { border-collapse: collapse; width: 100%; font-size: .97rem; }
+  th, td { text-align: left; vertical-align: top; padding: .55rem .6rem; border-bottom: 1px solid var(--line); }
+  th { font-weight: 600; color: var(--muted); font-size: .85rem; text-transform: uppercase; letter-spacing: .04em; }
+  td:first-child { width: 42%; }
+
+  /* Häufige Fragen */
+  details {
+    border-top: 1px solid var(--line);
+    padding: .2rem 0;
+  }
+  details:last-of-type { border-bottom: 1px solid var(--line); }
+  summary {
+    cursor: pointer;
+    list-style: none;
+    font-weight: 600;
+    padding: .75rem 2rem .75rem 0;
+    position: relative;
+  }
+  summary::-webkit-details-marker { display: none; }
+  summary::after {
+    content: "+";
+    position: absolute; right: .25rem; top: .55rem;
+    font-size: 1.4rem; font-weight: 400; color: var(--accent);
+    transition: transform .2s ease;
+  }
+  details[open] summary::after { transform: rotate(45deg); }
+  details > div { padding: 0 0 .6rem; }
+  @media (prefers-reduced-motion: reduce) { summary::after { transition: none; } }
+
+  .msg { font-style: italic; }
+  .contact p { margin-bottom: .4rem; }
+  footer {
+    max-width: var(--measure);
+    margin: 0 auto;
+    padding: 0 16px 2.5rem;
+    color: var(--muted);
+    font-size: .9rem;
+  }
+  footer a { color: var(--muted); }
+  /* Schmale Bildschirme */
+  .hero h1 { -webkit-hyphens: auto; hyphens: auto; overflow-wrap: break-word; }
+  @media (max-width: 30rem) {
+    .card { padding: 1.15rem 1rem 1rem; }
+    table.stack thead { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+    table.stack tr { display: block; padding: .55rem 0; border-bottom: 1px solid var(--line); }
+    table.stack td { display: block; border: 0; padding: .1rem 0; width: auto; }
+    table.stack td:first-child { font-weight: 600; }
+  }
+  @media print {
+    .band { background: none; color: var(--text); }
+    .topnav nav, .skip { display: none; }
+    .card { box-shadow: none; }
+    details > div { display: block !important; }
+  }
+</style>
+</head>
+<body>
+<a class="skip" href="#inhalt">Zum Inhalt springen</a>
+
+<header class="band">
+  <div class="band-inner">
+    <div class="topnav">
+      <a class="brand" href="./">
+        <svg viewBox="0 0 64 64" aria-hidden="true">
+          <defs>
+            <linearGradient id="g" x1="0" y1="0" x2="1" y2="1">
+              <stop offset="0" stop-color="#ff3b30"/>
+              <stop offset="1" stop-color="#c8102e"/>
+            </linearGradient>
+          </defs>
+          <rect width="64" height="64" rx="14" fill="url(#g)"/>
+          <rect x="27" y="7" width="10" height="23" rx="3" fill="#fff"/>
+          <rect x="20.5" y="13.5" width="23" height="10" rx="3" fill="#fff"/>
+          <rect x="10" y="33" width="44" height="21" rx="7" fill="#fff"/>
+          <g fill="#c8102e">
+            <rect x="15" y="37" width="4" height="3" rx="1"/><rect x="21" y="37" width="4" height="3" rx="1"/>
+            <rect x="27" y="37" width="4" height="3" rx="1"/><rect x="33" y="37" width="4" height="3" rx="1"/>
+            <rect x="39" y="37" width="4" height="3" rx="1"/><rect x="45" y="37" width="4" height="3" rx="1"/>
+            <rect x="15" y="42" width="4" height="3" rx="1"/><rect x="21" y="42" width="4" height="3" rx="1"/>
+            <rect x="27" y="42" width="4" height="3" rx="1"/><rect x="33" y="42" width="4" height="3" rx="1"/>
+            <rect x="39" y="42" width="4" height="3" rx="1"/><rect x="45" y="42" width="4" height="3" rx="1"/>
+            <rect x="15" y="47" width="4" height="3" rx="1"/><rect x="21" y="47" width="22" height="3" rx="1"/>
+            <rect x="45" y="47" width="4" height="3" rx="1"/>
+          </g>
+        </svg>
+        MedType
+      </a>
+      <nav aria-label="Seiten">
+        <a href="./" aria-current="page">Hilfe</a>
+        <a href="datenschutz.html">Datenschutz</a>
+      </nav>
+    </div>
+    <div class="hero">
+      <h1>Hilfe zu MedType</h1>
+      <p>Dein iPhone als Tastatur für den Praxis-PC. Hier findest du, was du brauchst, wie du loslegst und was bei
+        Problemen hilft.</p>
+    </div>
+  </div>
+</header>
+
+<main id="inhalt">
+
+  <section class="card" aria-labelledby="was">
+    <h2 id="was">Was ist MedType?</h2>
+    <p class="lead">Du schreibst in der App auf dem iPhone, und der Text erscheint am PC genau dort, wo der Cursor
+      steht – in jedem Programm, in das du tippen kannst.</p>
+    <p>Dafür steckt am PC ein kleiner <strong>MedType-USB-Dongle</strong>. Er meldet sich am PC wie eine normale
+      Tastatur; installieren musst du dort nichts. Das iPhone schickt den Text verschlüsselt per Bluetooth an den
+      Dongle, und der Dongle tippt ihn.</p>
+    <ul>
+      <li><strong>Vorschreiben:</strong> Text in Ruhe schreiben, korrigieren oder diktieren und mit „Senden“ am PC
+        tippen lassen.</li>
+      <li><strong>Live tippen:</strong> Jeder Buchstabe erscheint sofort am PC.</li>
+      <li><strong>Bausteine:</strong> häufige Texte speichern und mit einem Tipp einfügen.</li>
+    </ul>
+    <p class="muted">MedType ist ein Eingabewerkzeug. Die App wertet keine Texte aus, gibt keine medizinischen
+      Empfehlungen und ist kein Medizinprodukt.</p>
+  </section>
+
+  <section class="card" aria-labelledby="brauchst">
+    <h2 id="brauchst">Das brauchst du</h2>
+    <ul>
+      <li>den <strong>MedType-USB-Dongle</strong>, eingesteckt direkt am PC</li>
+      <li>einen <strong>Windows-PC mit deutscher Tastaturbelegung (QWERTZ)</strong>, Sprache „Deutsch
+        (Deutschland)“. Für PCs mit US-Tastaturbelegung gibt es eine eigene Dongle-Variante.</li>
+      <li>ein <strong>iPhone oder iPad mit iOS 17</strong> oder neuer, Bluetooth eingeschaltet</li>
+    </ul>
+    <p class="muted">Ein Konto oder eine Internetverbindung brauchst du nicht.</p>
+  </section>
+
+  <section class="card" aria-labelledby="start">
+    <h2 id="start">Erste Schritte</h2>
+    <ol class="steps">
+      <li><strong>Dongle einstecken.</strong> Steck den Dongle direkt am PC ein. Windows richtet ihn von selbst als
+        Tastatur ein. Die LED blinkt langsam blau: Der Dongle ist bereit.</li>
+      <li><strong>MedType öffnen</strong> und den Zugriff auf Bluetooth erlauben.</li>
+      <li><strong>Koppelmodus starten.</strong> Halte die Taste am Dongle <strong>3 Sekunden</strong> gedrückt, bis die
+        LED <strong>schnell blau</strong> blinkt. Der Koppelmodus läuft 2 Minuten.</li>
+      <li><strong>Dongle wählen.</strong> Tippe in MedType oben links auf den Verbindungsstatus. Unter „Dongles in der
+        Nähe“ steht dein Dongle („MedType Dongle“, Anzeige „Koppelbereit“). Antippen.</li>
+      <li><strong>Koppeln bestätigen.</strong> iOS fragt nach der Kopplung – tippe auf „Koppeln“. Die LED blinkt 3× grün
+        und leuchtet dann grün. Ab jetzt verbindet sich der Dongle nur noch mit diesem iPhone, und MedType verbindet
+        sich beim Start automatisch.</li>
+      <li><strong>Losschreiben.</strong> Klick am PC in das Feld, in das der Text soll. Schreib in MedType im Tab „Type“
+        und tippe auf „Senden“ – oder wechsle zu „Live tippen“.</li>
+    </ol>
+    <div class="note">Verbinde den Dongle immer in MedType, nicht in den Bluetooth-Einstellungen des iPhones.</div>
+  </section>
+
+  <section class="card" aria-labelledby="demo">
+    <h2 id="demo">Ohne Dongle ausprobieren</h2>
+    <p>Schalte in MedType unter <span class="path">Einstellungen › Demo-Modus</span> den Demo-Modus ein. Tippe dann
+      oben links auf den Verbindungsstatus und wähle „Demo-Dongle“. MedType tut jetzt so, als wäre ein Dongle
+      verbunden. Was am PC angekommen wäre, siehst du unter <span class="path">Einstellungen › Demo-Modus ›
+      Demo-Ausgabe</span>. Am PC wird dabei nichts getippt.</p>
+    <p>Für den echten Dongle schaltest du den Demo-Modus wieder aus.</p>
+  </section>
+
+  <section class="card" aria-labelledby="led">
+    <h2 id="led">Was die LED am Dongle zeigt</h2>
+    <div class="table-wrap">
+      <table class="stack">
+        <thead><tr><th scope="col">LED</th><th scope="col">Bedeutung</th></tr></thead>
+        <tbody>
+          <tr><td>blinkt langsam blau</td><td>Bereit, wartet auf dein iPhone</td></tr>
+          <tr><td>blinkt schnell blau</td><td>Koppelmodus (2 Minuten)</td></tr>
+          <tr><td>leuchtet grün</td><td>Mit dem iPhone verbunden</td></tr>
+          <tr><td>flackert grün</td><td>Tippt gerade</td></tr>
+          <tr><td>blinkt 3× grün</td><td>Kopplung gespeichert</td></tr>
+          <tr><td>kurz rot</td><td>Etwas wurde abgewiesen, z. B. ein Zeichen, das der Dongle nicht tippen kann, oder
+            ein Gerät, das nicht gekoppelt ist</td></tr>
+          <tr><td>blinkt 3× rot</td><td>Werkszustand: alle Kopplungen gelöscht</td></tr>
+          <tr><td>leuchtet dauerhaft rot</td><td>Startfehler: Dongle abziehen und wieder einstecken</td></tr>
+          <tr><td>aus</td><td>Kein Strom – oder ein Update läuft gerade (bis etwa 20 Sekunden, nicht abziehen)</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <section class="card" aria-labelledby="faq">
+    <h2 id="faq">Häufige Fragen</h2>
+
+    <h3>Koppeln und Verbinden</h3>
+
+    <details>
+      <summary>Das Koppeln klappt nicht.</summary>
+      <div>
+        <p>Je nach Meldung in MedType:</p>
+        <ul>
+          <li><span class="msg">„Der Dongle ist nicht mit diesem iPhone gekoppelt …“</span> – Der Dongle ist nicht im
+            Koppelmodus. Halte die Taste 3 Sekunden, bis die LED schnell blau blinkt, und verbinde dich dann neu. Das
+            kann bis zu 30 Sekunden dauern.</li>
+          <li><span class="msg">„Die Kopplung mit dem Dongle hat nicht geklappt …“</span> – Tippe in der Abfrage von iOS
+            auf „Koppeln“. Klappt es weiter nicht: Öffne auf dem iPhone <span class="path">Einstellungen ›
+            Bluetooth</span>, tippe beim Dongle auf ⓘ und wähle „Dieses Gerät ignorieren“. Dann neu koppeln.</li>
+          <li><span class="msg">„Dieses iPhone ist schon mit dem Dongle gekoppelt …“</span> – Warte, bis die LED nicht
+            mehr schnell blau blinkt (höchstens 2 Minuten), und verbinde dich dann neu.</li>
+        </ul>
+      </div>
+    </details>
+
+    <details>
+      <summary>MedType findet den Dongle nicht.</summary>
+      <div>
+        <ul>
+          <li>Steckt der Dongle direkt am PC? Am Monitor oder an einem Hub ohne Strom klappt es oft nicht.</li>
+          <li>LED prüfen: Blinkt sie blau, ist der Dongle bereit. Leuchtet sie grün, ist er schon mit einem iPhone
+            verbunden – dort in MedType trennen.</li>
+          <li>Ist der Demo-Modus aus? Ist Bluetooth an, und darf MedType Bluetooth nutzen
+            (<span class="path">Einstellungen › Datenschutz &amp; Sicherheit › Bluetooth</span>)?</li>
+          <li>In der Liste erscheinen nur MedType-Dongles, keine Kopfhörer oder Uhren.</li>
+        </ul>
+      </div>
+    </details>
+
+    <details>
+      <summary>Ich möchte ein neues iPhone verwenden.</summary>
+      <div>
+        <p>Halte die Taste am Dongle 3 Sekunden gedrückt und kopple das neue iPhone wie bei den ersten Schritten. Mit
+          der neuen Kopplung verliert das alte iPhone den Zugang. Läuft der Koppelmodus ohne neue Kopplung ab, bleibt
+          alles wie vorher.</p>
+        <p>Soll später wieder das alte iPhone ran: dort in den Bluetooth-Einstellungen beim Dongle „Dieses Gerät
+          ignorieren“ wählen und neu koppeln.</p>
+      </div>
+    </details>
+
+    <details>
+      <summary>Wie setze ich den Dongle zurück (Werkszustand)?</summary>
+      <div>
+        <p>Halte die Taste <strong>10 Sekunden</strong> gedrückt. Nach 3 Sekunden blinkt die LED schnell blau – weiter
+          halten. Nach 10 Sekunden blinkt sie 3× rot. Jetzt loslassen.</p>
+        <p>Alle Kopplungen sind gelöscht, und der Dongle heißt wieder „MedType Dongle“. Danach am iPhone in den
+          Bluetooth-Einstellungen beim Dongle „Dieses Gerät ignorieren“ wählen und neu koppeln.</p>
+      </div>
+    </details>
+
+    <details>
+      <summary>Kann ich mehrere Dongles nutzen?</summary>
+      <div>
+        <p>Ja. Gib jedem Dongle einen eigenen Namen, z. B. „Empfang“ oder „Behandlung 2“: <span class="path">Einstellungen
+          › Dongle-Zeile antippen › Name</span>. Zu einem anderen Dongle wechselst du unter
+          <span class="path">Einstellungen › Dongle-Zeile antippen › Anderen Dongle wählen …</span>. Jeder Dongle ist
+          mit genau einem iPhone gekoppelt.</p>
+      </div>
+    </details>
+
+    <details>
+      <summary>Die App zeigt „Verbindung verloren“.</summary>
+      <div>
+        <p>Der Dongle wurde abgezogen, der PC ist aus oder das iPhone ist außer Reichweite. MedType verbindet sich von
+          selbst neu, sobald der Dongle wieder erreichbar ist. Prüf danach den Text am PC: Was vor dem Abbruch nicht mehr
+          angekommen ist, wurde nicht getippt.</p>
+      </div>
+    </details>
+
+    <h3>Tippen am PC</h3>
+
+    <details>
+      <summary>Am PC kommen falsche Zeichen an (y und z vertauscht, Sonderzeichen falsch).</summary>
+      <div>
+        <p>Die Tastaturbelegung des PCs passt nicht zum Dongle. Der normale Dongle tippt für
+          <strong>Deutsch (Deutschland), QWERTZ</strong>. Stell die Belegung in Windows unter
+          <span class="path">Einstellungen › Zeit und Sprache › Sprache und Region</span> ein.</p>
+        <p>Bei Remote Desktop oder Citrix zählt die Belegung der Remote-Sitzung. Schweizer oder andere deutsche
+          Varianten werden nicht unterstützt.</p>
+      </div>
+    </details>
+
+    <details>
+      <summary>Mein PC hat eine US-Tastatur.</summary>
+      <div>
+        <p>Dafür gibt es eine eigene Dongle-Variante. Umlaute und ß kann sie nicht tippen. Updates für diese Variante
+          kommen nicht per App, sondern einmal am PC – schreib uns dafür an die Adresse unten.</p>
+      </div>
+    </details>
+
+    <details>
+      <summary>Groß- und Kleinschreibung ist vertauscht.</summary>
+      <div>
+        <p>Am PC ist die Feststelltaste an. Der Dongle gleicht das aus, wenn der PC ihm meldet, dass sie an ist. In
+          Remote-Sitzungen kommt diese Meldung manchmal nicht an. Schalte dann die Feststelltaste am PC aus.</p>
+      </div>
+    </details>
+
+    <details>
+      <summary>In „Live tippen“ kommt am Satzanfang kein Großbuchstabe.</summary>
+      <div>
+        <p>Das ist Absicht: In „Live tippen“ ist die automatische Großschreibung der iPhone-Tastatur aus, damit keine
+          Zeichen verloren gehen. Tippe Großbuchstaben dort mit der Umschalttaste. In „Vorschreiben“ arbeitet die
+          Großschreibung wie gewohnt.</p>
+      </div>
+    </details>
+
+    <details>
+      <summary>„Der Text enthält ein Zeichen, das der Dongle nicht tippen kann.“</summary>
+      <div>
+        <p>Der Dongle tippt Buchstaben, Ziffern, die üblichen Satzzeichen, Umlaute, ß, € und @ sowie Zeichen wie
+          { } [ ] \ ~ | § ° ² ³ µ. Nicht tippbar sind zum Beispiel Emojis, das Auslassungszeichen „…“ oder das
+          Malzeichen „×“. Dann wird die ganze Nachricht nicht getippt.</p>
+        <p>Tipp: iOS macht aus drei Punkten manchmal „…“. Schreib die Punkte dann einzeln oder lösche die Ersetzung.
+          Schräge Anführungszeichen und lange Striche vereinfacht MedType automatisch, solange in den Einstellungen
+          „Anführungszeichen und Striche vereinfachen“ an ist.</p>
+      </div>
+    </details>
+
+    <details>
+      <summary>Zeichen fehlen oder kommen doppelt.</summary>
+      <div>
+        <p>Stell die Tippgeschwindigkeit niedriger: <span class="path">Einstellungen › Tippen ›
+          Tippgeschwindigkeit</span>. Bei Remote Desktop oder Citrix höchstens 30 Zeichen pro Sekunde.</p>
+        <p>Verschluckt ein Programm Text nach einem Zeilenumbruch, hilft <span class="path">Einstellungen › Tippen ›
+          Pause nach Zeilenumbruch</span>.</p>
+      </div>
+    </details>
+
+    <details>
+      <summary>Es wird nichts getippt, MedType wartet.</summary>
+      <div>
+        <p>Wahrscheinlich ist der PC im Standby. Der Dongle weckt den PC absichtlich nicht, damit kein Text auf dem
+          Sperrbildschirm landet. Schon gesendeter Text wird getippt, sobald der PC wieder wach ist. Willst du das
+          nicht, zieh den Dongle kurz ab – das leert seinen Speicher.</p>
+      </div>
+    </details>
+
+    <h3>Dongle-Update</h3>
+
+    <details>
+      <summary>Wie aktualisiere ich den Dongle?</summary>
+      <div>
+        <p>Neue Software für den Dongle bringt MedType mit; heruntergeladen wird nichts. Gibt es ein Update, steht in
+          den Einstellungen unter der Dongle-Zeile blau „Update auf … verfügbar“.</p>
+        <ol>
+          <li>Dongle im PC eingesteckt und mit MedType verbunden lassen.</li>
+          <li>„Update auf … verfügbar“ antippen und starten.</li>
+          <li>App geöffnet und das iPhone in der Nähe lassen. Am Ende startet der Dongle neu: Die LED ist dann bis zu
+            etwa 20 Sekunden aus, und Windows meldet die Tastatur kurz ab. Nicht abziehen.</li>
+          <li>MedType prüft danach selbst, ob die neue Software läuft.</li>
+        </ol>
+      </div>
+    </details>
+
+    <details>
+      <summary>Was bedeuten die Meldungen beim Update?</summary>
+      <div>
+        <div class="table-wrap">
+          <table class="stack">
+            <thead><tr><th scope="col">Meldung</th><th scope="col">Was du tust</th></tr></thead>
+            <tbody>
+              <tr><td>„Fast fertig“</td><td>Die neue Software läuft, ist aber noch nicht bestätigt. Lass den Dongle
+                eingesteckt und mit MedType verbunden; dann bestätigt er sich selbst.</td></tr>
+              <tr><td>„Update wurde zurückgenommen“</td><td>Die bisherige Software läuft wieder. Dongle einstecken, MedType
+                geöffnet lassen und das Update erneut starten.</td></tr>
+              <tr><td>„Funk-Updates gibt es ab Dongle-Version 3 …“</td><td>Dein Dongle ist zu alt für Updates per App.
+                Er muss einmal am PC aktualisiert werden – schreib uns.</td></tr>
+              <tr><td>„App und Dongle passen nicht zusammen. Der Dongle braucht ein Update.“</td><td>Den Dongle
+                aktualisieren, wie oben beschrieben.</td></tr>
+              <tr><td>„Der Dongle tippt gerade noch …“</td><td>Warten, bis das Tippen fertig ist, dann starten.</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </details>
+
+    <h3>Daten und Sonstiges</h3>
+
+    <details>
+      <summary>Wo bleiben meine Texte?</summary>
+      <div>
+        <p>Bausteine und Entwürfe bleiben auf deinem iPhone. MedType hat keinen Server und kein Konto; Texte gehen nur
+          per Bluetooth an deinen eigenen Dongle. Am PC landen sie in dem Programm, in das du tippst. Mehr dazu in der
+          <a href="datenschutz.html">Datenschutzerklärung</a>.</p>
+        <p>Schütz dein iPhone mit einem Code, wenn du Patientendaten in Bausteinen oder Entwürfen hast.</p>
+      </div>
+    </details>
+
+    <details>
+      <summary>Kann ich diktieren?</summary>
+      <div>
+        <p>Ja, in beiden Modi. Tippe auf das Mikrofon der iPhone-Tastatur. In „Vorschreiben“ diktierst du wie überall in
+          iOS und sendest danach. In „Live tippen“ geht der diktierte Text direkt an den PC; im Verlauf erscheint er
+          nach einer kurzen Sprechpause. Das Diktat ist eine Funktion von iOS.</p>
+      </div>
+    </details>
+
+    <details>
+      <summary>Woher bekomme ich einen Dongle?</summary>
+      <div>
+        <p>Schreib uns an die Adresse unten.</p>
+      </div>
+    </details>
+  </section>
+
+  <section class="card contact" aria-labelledby="kontakt">
+    <h2 id="kontakt">Anbieter und Kontakt</h2>
+    <p><strong>Leonard Biron</strong></p>
+    <p>E-Mail: <a href="mailto:bironleonard5@gmail.com">bironleonard5@gmail.com</a></p>
+    <div class="note" style="margin-top:.9rem">Bitte schick uns keine Patientendaten – auch nicht in Bildschirmfotos.
+      Beschreib das Problem und nenne die Meldung, die MedType zeigt, und die Version unter
+      <span class="path">Einstellungen › Info</span>.</div>
+  </section>
+
+</main>
+
+<footer>
+  <p><a href="datenschutz.html">Datenschutzerklärung</a> · Stand: 14. Oktober 2026 · MedType 1.2</p>
+</footer>
+</body>
+</html>
